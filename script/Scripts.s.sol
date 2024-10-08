@@ -45,11 +45,20 @@ contract LayEggs is Script {
         uint256 lastTokenId = CHICKEN.lastTokenId();
         for (uint256 i = 1; i < lastTokenId; i++) {
             if (CHICKEN.ownerOf(i) == msg.sender) {
-                tokenIds.push(i);
+                (, uint40 nextTimeToLay) = CHICKEN.chickens(i);
+                if (nextTimeToLay <= block.timestamp) {
+                    tokenIds.push(i);
+                }
             }
         }
+
+        if (tokenIds.length == 0) {
+            console2.log("No chickens to lay eggs for");
+            return;
+        }
+
         console2.log("Laying eggs for %s chickens", tokenIds.length);
-        CHICKEN.layEggs{value: VRF_FEE}(tokenIds);
+        CHICKEN.layEggs{ value: VRF_FEE }(tokenIds);
 
         vm.stopBroadcast();
     }
@@ -79,7 +88,7 @@ contract HatchSuperEggs is Script {
         if (superEggs > 0) {
             console2.log("Hatching %s super eggs", superEggs);
             uint256 incubatorId = INCUBATOR.incubateSuperEggs(superEggs);
-            INCUBATOR.hatch{value: VRF_FEE}(incubatorId, superEggs);
+            INCUBATOR.hatch{ value: VRF_FEE }(incubatorId, superEggs);
         } else {
             console2.log("No super eggs to hatch");
         }
@@ -107,7 +116,7 @@ contract LevelUpChickens is Script {
                     console2.log("Chicken %s is ready to lay at %s", i, nextTimeToLay);
                     uint256[] memory tokenIds = new uint256[](1);
                     tokenIds[0] = i;
-                    CHICKEN.layEggs{value: VRF_FEE}(tokenIds);
+                    CHICKEN.layEggs{ value: VRF_FEE }(tokenIds);
                 }
                 if (level < 4) {
                     uint256 wholeEggsRequired = CHICKEN.calculateEggsRequiredToLevelUp(level, 1);
@@ -126,4 +135,3 @@ contract LevelUpChickens is Script {
         vm.stopBroadcast();
     }
 }
-
