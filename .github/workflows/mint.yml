@@ -1,0 +1,28 @@
+name: Mint Super Eggs
+
+on:
+  schedule:
+    # Runs every 40 minutes
+    - cron: "*/40 * * * *"
+  workflow_dispatch:
+
+jobs:
+  run-script:
+    name: Foundry Project
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+
+      - name: Run MintSupereggs Script
+        env:
+          BASE_SEPOLIA_RPC_URL: ${{ secrets.BASE_SEPOLIA_RPC_URL }}
+          BASESCAN_API_KEY: ${{ secrets.BASESCAN_API_KEY }}
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+        run: |
+          forge script MintSupereggs -vvv --rpc-url $BASE_SEPOLIA_RPC_URL --etherscan-api-key $BASESCAN_API_KEY --private-key $PRIVATE_KEY --broadcast
