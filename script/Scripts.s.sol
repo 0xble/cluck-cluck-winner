@@ -114,7 +114,7 @@ contract LevelUpChickens is Script {
         }
 
         uint256 lastTokenId = CHICKEN.lastTokenId();
-        for (uint256 i = lastTokenId - 1; i > 0; i--) {
+        for (uint256 i = lastTokenId; i > 0; i--) {
             uint256 wholeEggBalance = EGG.balanceOf(msg.sender) / 1e18;
             if (CHICKEN.ownerOf(i) == msg.sender) {
                 (uint8 level, uint40 nextTimeToLay) = CHICKEN.chickens(i);
