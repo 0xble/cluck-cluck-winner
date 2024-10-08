@@ -84,7 +84,7 @@ contract HatchSuperEggs is Script {
     function run() public {
         vm.startBroadcast();
 
-        uint8 superEggs = uint8(SUPER_EGG.balanceOf(msg.sender, 1) / 1e18);
+        uint8 superEggs = uint8(SUPER_EGG.balanceOf(msg.sender, 1));
         if (superEggs > 0) {
             console2.log("Hatching %s super eggs", superEggs);
             uint256 incubatorId = INCUBATOR.incubateSuperEggs(superEggs);
