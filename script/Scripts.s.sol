@@ -123,7 +123,13 @@ contract LevelUpChickens is Script {
                     uint256[] memory tokenIds = new uint256[](1);
                     tokenIds[0] = i;
                     CHICKEN.layEggs{ value: VRF_FEE }(tokenIds);
+                } else {
+                    // Skip if can lay in less than 3.5 hours
+                    if (nextTimeToLay < block.timestamp + 3.5 hours) {
+                        continue;
+                    }
                 }
+
                 if (level < 4) {
                     uint256 wholeEggsRequired = CHICKEN.calculateEggsRequiredToLevelUp(level, 1);
                     if (wholeEggBalance >= wholeEggsRequired) {
