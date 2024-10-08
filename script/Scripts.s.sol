@@ -9,7 +9,13 @@ interface Chicken {
     function lastTokenId() external view returns (uint256);
     function layEggs(uint256[] calldata tokenIds) external payable;
     function chickens(uint256 tokenId) external view returns (uint8 eggLevel, uint40 nextTimeToLay);
-    function calculateEggsRequiredToLevelUp(uint8 currentLevel, uint8 levelsToIncrease) external returns (uint256);
+    function calculateEggsRequiredToLevelUp(
+        uint8 currentLevel,
+        uint8 levelsToIncrease
+    )
+        external
+        view
+        returns (uint256);
     function feed(uint8[] calldata levelsToIncrease, uint256[] calldata tokenIdsToLevelUp) external;
 }
 
@@ -43,7 +49,7 @@ contract LayEggs is Script {
 
         // Lay eggs
         uint256 lastTokenId = CHICKEN.lastTokenId();
-        for (uint256 i = 1; i < lastTokenId; i++) {
+        for (uint256 i = 1; i <= lastTokenId; i++) {
             if (CHICKEN.ownerOf(i) == msg.sender) {
                 (, uint40 nextTimeToLay) = CHICKEN.chickens(i);
                 if (nextTimeToLay <= block.timestamp) {
