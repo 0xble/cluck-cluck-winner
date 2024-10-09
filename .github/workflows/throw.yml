@@ -1,14 +1,14 @@
-name: Mint Super Eggs
+name: Throw Eggs
 
 on:
   schedule:
-    # Runs every 40 minutes
-    - cron: "*/40 * * * *"
+    # Runs every 50 minutes
+    - cron: "*/50 * * * *"
   workflow_dispatch:
 
 jobs:
   run-script:
-    name: Mint Supereggs
+    name: Throw Eggs
     runs-on: ubuntu-latest
 
     steps:
@@ -24,10 +24,10 @@ jobs:
       - name: "Install the Node.js dependencies"
         run: "bun install"
 
-      - name: Run MintSupereggs Script
+      - name: Run Throw Script
         env:
           BASE_SEPOLIA_RPC_URL: ${{ secrets.BASE_SEPOLIA_RPC_URL }}
           BASESCAN_API_KEY: ${{ secrets.BASESCAN_API_KEY }}
           PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
         run: |
-          forge script MintSupereggs -vvv --rpc-url $BASE_SEPOLIA_RPC_URL --etherscan-api-key $BASESCAN_API_KEY --private-key $PRIVATE_KEY --broadcast
+          forge script Throw -vvv --rpc-url $BASE_SEPOLIA_RPC_URL --etherscan-api-key $BASESCAN_API_KEY --private-key $PRIVATE_KEY --broadcast

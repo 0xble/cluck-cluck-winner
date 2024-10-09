@@ -24,10 +24,10 @@ jobs:
       - name: "Install the Node.js dependencies"
         run: "bun install"
 
-      - name: Run HatchSuperEggs Script
+      - name: Run Hatch Script
         env:
           BASE_SEPOLIA_RPC_URL: ${{ secrets.BASE_SEPOLIA_RPC_URL }}
           BASESCAN_API_KEY: ${{ secrets.BASESCAN_API_KEY }}
           PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
         run: |
-          forge script HatchSuperEggs -vvv --rpc-url $BASE_SEPOLIA_RPC_URL --etherscan-api-key $BASESCAN_API_KEY --private-key $PRIVATE_KEY --broadcast
+          forge script Hatch -vvv --rpc-url $BASE_SEPOLIA_RPC_URL --etherscan-api-key $BASESCAN_API_KEY --private-key $PRIVATE_KEY --broadcast

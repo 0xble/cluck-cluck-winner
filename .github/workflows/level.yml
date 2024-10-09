@@ -2,8 +2,8 @@ name: Level Up Chickens
 
 on:
   schedule:
-    # Runs every 2 hours and 15 minutes
-    - cron: "15 */2 * * *"
+    # Runs every 15 minutes
+    - cron: '*/15 * * * *'
   workflow_dispatch:
 
 jobs:
@@ -12,22 +12,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: "Check out the repo"
-        uses: "actions/checkout@v4"
+      - name: 'Check out the repo'
+        uses: 'actions/checkout@v4'
 
-      - name: "Install Foundry"
-        uses: "foundry-rs/foundry-toolchain@v1"
+      - name: 'Install Foundry'
+        uses: 'foundry-rs/foundry-toolchain@v1'
 
-      - name: "Install Bun"
-        uses: "oven-sh/setup-bun@v1"
+      - name: 'Install Bun'
+        uses: 'oven-sh/setup-bun@v1'
 
-      - name: "Install the Node.js dependencies"
-        run: "bun install"
+      - name: 'Install the Node.js dependencies'
+        run: 'bun install'
 
-      - name: Run LevelUpChickens Script
+      - name: Run Level Script
         env:
           BASE_SEPOLIA_RPC_URL: ${{ secrets.BASE_SEPOLIA_RPC_URL }}
           BASESCAN_API_KEY: ${{ secrets.BASESCAN_API_KEY }}
           PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
         run: |
-          forge script LevelUpChickens -vvv --rpc-url $BASE_SEPOLIA_RPC_URL --etherscan-api-key $BASESCAN_API_KEY --private-key $PRIVATE_KEY --broadcast
+          forge script Level -vvv --rpc-url $BASE_SEPOLIA_RPC_URL --etherscan-api-key $BASESCAN_API_KEY --private-key $PRIVATE_KEY --broadcast
