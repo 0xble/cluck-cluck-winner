@@ -2,8 +2,8 @@ name: Hatch Super Eggs
 
 on:
   schedule:
-    # Runs every 30 minutes
-    - cron: "*/30 * * * *"
+    # Runs every 1 hour at 10 minutes
+    - cron: "10 * * * *"
   workflow_dispatch:
 
 jobs:

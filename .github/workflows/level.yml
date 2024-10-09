@@ -2,8 +2,8 @@ name: Level Up Chickens
 
 on:
   schedule:
-    # Runs every 2 hours
-    - cron: "0 */2 * * *"
+    # Runs every 2 hours and 15 minutes
+    - cron: "15 */2 * * *"
   workflow_dispatch:
 
 jobs:
