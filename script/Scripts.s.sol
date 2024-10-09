@@ -208,26 +208,26 @@ contract Throw is Script {
             console2.log("%s. %s with %s chicken levels", i + 1, players[i].name, levels[i]);
         }
 
+        uint256 eggsAvailable = EGG.balanceOf(msg.sender);
         uint256 superEggsToMint = 0;
         for (uint256 i = 1; i <= lastTokenId; i++) {
             address owner = CHICKEN.ownerOf(i);
             if (owner == players[0].addr || owner == players[1].addr) {
-                uint256 eggsAvailable = EGG.balanceOf(msg.sender) - (superEggsToMint * COST_PER_SUPEGG);
-                uint256 superEggsAvailable = eggsAvailable / COST_PER_SUPEGG;
-
-                if (eggsAvailable < 1e18) break;
-
                 (uint8 level,) = CHICKEN.chickens(i);
-                if (level >= 4 && superEggsAvailable > 0) {
+                if (level >= 4 && eggsAvailable >= COST_PER_SUPEGG) {
                     // Throw at level 4 or above only if super eggs are available
+                    console2.log("Throwing super egg at enemy level %s", level);
                     Attack memory attack = Attack({ tokenId: i, eggsToThrow: 1, isSuperEgg: true });
                     attacks.push(attack);
+                    eggsAvailable -= COST_PER_SUPEGG;
                     superEggsToMint++;
                 } else if (level > 1) {
                     // Throw eggs if above level 1 and eggs are available
                     Attack memory attack = Attack({ tokenId: i, eggsToThrow: level - 1, isSuperEgg: false });
                     if (eggsAvailable / 1e18 >= attack.eggsToThrow) {
+                        console2.log("Throwing %s eggs at enemy level %s", attack.eggsToThrow, level);
                         attacks.push(attack);
+                        eggsAvailable -= attack.eggsToThrow * 1e18;
                     }
                 }
             }
@@ -240,7 +240,6 @@ contract Throw is Script {
 
         // Mint super eggs to throw
         if (superEggsToMint > 0) {
-            console2.log("Minting %s super eggs to throw", superEggsToMint);
             SUPER_EGG.mint(superEggsToMint);
         }
 
@@ -254,6 +253,7 @@ contract Throw is Script {
             tokenIds[i] = attack.tokenId;
             numEggs[i] = attack.eggsToThrow;
             areSuperEggs[i] = attack.isSuperEgg;
+            comments[i] = "ATTACK_PHASE";
         }
         CHICKEN.requestThrowEgg{ value: VRF_FEE }(tokenIds, numEggs, areSuperEggs, comments);
 
