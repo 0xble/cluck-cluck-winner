@@ -124,7 +124,9 @@ contract Level is Script {
                     }
                 }
 
-                if (level < 4) {
+                // Level up if below level 4 before attack phase, otherwise level up if below level 3
+                uint256 targetLevel = block.timestamp > ATTACK_PHASE_START_AT ? 3 : 4;
+                if (level < targetLevel) {
                     uint256 wholeEggsRequired = CHICKEN.calculateEggsRequiredToLevelUp(level, 1);
                     if (wholeEggBalance >= wholeEggsRequired) {
                         console2.log("Leveling up chicken %s to %s", i, level + 1);
