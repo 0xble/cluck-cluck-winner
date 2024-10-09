@@ -175,7 +175,7 @@ contract Throw is Script {
         players[6] = Player("Blaze", 0xdE83AB8c31585DFD4b25cBA8aD61bd587740336E);
         players[7] = Player("Jeremy", 0x8a00c2f7bA8ec5FDeFECbc0b3fFf8a96EAE0bC24);
 
-        // Find top 2 players by sum of chickens levels
+        // Sort players by score
         uint256 lastTokenId = CHICKEN.lastTokenId();
         uint256[] memory levels = new uint256[](players.length);
         for (uint256 i = 0; i < players.length; i++) {
@@ -188,8 +188,6 @@ contract Throw is Script {
             }
             levels[i] = sumLevels;
         }
-
-        // Sort levels in descending order
         for (uint256 i = 0; i < levels.length; i++) {
             for (uint256 j = i + 1; j < levels.length; j++) {
                 if (levels[i] < levels[j]) {
@@ -199,12 +197,11 @@ contract Throw is Script {
             }
         }
 
-        // Throw eggs only at top 2 players
-        console2.log("TOP 2 PLAYERS (TARGETS):");
+        // Throw eggs only at top players
+        console2.log("TOP PLAYER (TARGET):");
         console2.log("-> 1. %s with %s chicken levels", players[0].name, levels[0]);
-        console2.log("-> 2. %s with %s chicken levels", players[1].name, levels[1]);
         console2.log("OTHER PLAYERS:");
-        for (uint256 i = 2; i < players.length; i++) {
+        for (uint256 i = 1; i < players.length; i++) {
             console2.log("%s. %s with %s chicken levels", i + 1, players[i].name, levels[i]);
         }
 
@@ -212,7 +209,7 @@ contract Throw is Script {
         uint256 superEggsToMint = 0;
         for (uint256 i = 1; i <= lastTokenId; i++) {
             address owner = CHICKEN.ownerOf(i);
-            if (owner == players[0].addr || owner == players[1].addr) {
+            if (owner == players[0].addr) {
                 (uint8 level,) = CHICKEN.chickens(i);
                 if (level > 7 && eggsAvailable >= COST_PER_SUPEGG) {
                     // Throw at level 7 or above only if super eggs are available
