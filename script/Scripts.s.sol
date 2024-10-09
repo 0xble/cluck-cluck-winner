@@ -214,8 +214,8 @@ contract Throw is Script {
             address owner = CHICKEN.ownerOf(i);
             if (owner == players[0].addr || owner == players[1].addr) {
                 (uint8 level,) = CHICKEN.chickens(i);
-                if (level >= 4 && eggsAvailable >= COST_PER_SUPEGG) {
-                    // Throw at level 4 or above only if super eggs are available
+                if (level > 7 && eggsAvailable >= COST_PER_SUPEGG) {
+                    // Throw at level 7 or above only if super eggs are available
                     console2.log("Throwing super egg at enemy level %s", level);
                     Attack memory attack = Attack({ tokenId: i, eggsToThrow: 1, isSuperEgg: true });
                     attacks.push(attack);
