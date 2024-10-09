@@ -1,9 +1,9 @@
 name: Hatch Super Eggs
 
 on:
-  schedule:
-    # Runs every 1 hour at 10 minutes
-    - cron: "10 * * * *"
+  # schedule:
+  #   # Runs every 1 hour at 10 minutes
+  #   - cron: "10 * * * *"
   workflow_dispatch:
 
 jobs:
@@ -12,17 +12,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: "Check out the repo"
-        uses: "actions/checkout@v4"
+      - name: 'Check out the repo'
+        uses: 'actions/checkout@v4'
 
-      - name: "Install Foundry"
-        uses: "foundry-rs/foundry-toolchain@v1"
+      - name: 'Install Foundry'
+        uses: 'foundry-rs/foundry-toolchain@v1'
 
-      - name: "Install Bun"
-        uses: "oven-sh/setup-bun@v1"
+      - name: 'Install Bun'
+        uses: 'oven-sh/setup-bun@v1'
 
-      - name: "Install the Node.js dependencies"
-        run: "bun install"
+      - name: 'Install the Node.js dependencies'
+        run: 'bun install'
 
       - name: Run Hatch Script
         env:
